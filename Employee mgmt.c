@@ -427,7 +427,7 @@ int main() {
     printf("\n");
     printf("\n");
     if (!adminLogin()) {
-        printf("\033[1;31mInvalid password! Access denied.\033[0m\n");
+        printf("\033[1;31mInvalid password! Access denied.!\033[0m\n");
         return 1;
     }
 
