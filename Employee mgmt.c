@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
+
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
 
 #define MAX_NAME 50
 #define MAX_DEPT 30
@@ -18,6 +24,15 @@ struct Employee {
     char joinDate[MAX_DATE];
     int daysPresent;
 };
+
+void enableVirtualTerminal() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
+
 
 void addEmployee() {
     struct Employee emp;
@@ -389,6 +404,7 @@ int adminLogin() {
 
 int main() {
     int choice;
+    enableVirtualTerminal();
 
     printf(" \033[1;31m - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + \033[0m");
     printf("\n");
@@ -411,7 +427,7 @@ int main() {
     printf("\n");
     printf("\n");
     if (!adminLogin()) {
-        printf("Invalid password! Access denied.\n");
+        printf("\033[1;31mInvalid password! Access denied.\033[0m\n");
         return 1;
     }
 
